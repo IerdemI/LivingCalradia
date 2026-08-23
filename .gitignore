@@ -1,0 +1,33 @@
+# Visual Studio
+.vs/
+**/.vs/
+
+# Build outputs
+bin/
+obj/
+**/bin/
+**/obj/
+
+# Visual Studio user files
+*.user
+*.suo
+*.slnx
+
+# Local configuration
+local.settings.json
+bannerlord.local.json
+
+# AI models / runtime
+*.gguf
+models/
+runtime/
+llama.cpp/
+
+# Runtime data
+saves/
+userdata/
+logs/
+
+# OS
+.DS_Store
+Thumbs.db

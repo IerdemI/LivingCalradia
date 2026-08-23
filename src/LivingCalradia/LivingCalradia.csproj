@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<AssemblyName>LivingCalradia</AssemblyName>
+		<RootNamespace>LivingCalradia</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Reference Include="TaleWorlds.Core">
+	    <HintPath>F:\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.Core.dll</HintPath>
+	  </Reference>
+	  <Reference Include="TaleWorlds.Library">
+	    <HintPath>F:\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.Library.dll</HintPath>
+	  </Reference>
+	  <Reference Include="TaleWorlds.MountAndBlade">
+	    <HintPath>F:\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+</Project>
