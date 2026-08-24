@@ -16,12 +16,17 @@ namespace LivingCalradia
             );
         }
 
-        private void OnSessionLaunched(CampaignGameStarter campaignGameStarter)
+        private async void OnSessionLaunched(CampaignGameStarter campaignGameStarter)
         {
             Hero testHero = Hero.AllAliveHeroes
-                .FirstOrDefault(h => h != Hero.MainHero && h.IsLord);
+            .FirstOrDefault(h => h != Hero.MainHero && h.IsLord);
 
             CharacterContext context = CharacterContextReader.BuildContext(testHero);
+
+
+            string prompt = CharacterPromptBuilder.BuildTestPrompt(context);
+
+            LlmResponse aiResponse = await LocalLlmClient.SendPromptAsync(prompt);
 
             File.WriteAllText(
                 @"F:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\LivingCalradia\context_test.txt",
@@ -36,6 +41,14 @@ namespace LivingCalradia
                 $"Siblings: {string.Join(", ", context.Siblings)}\n" +
                 $"Honor: {context.Honor}\n"
             );
+
+            File.WriteAllText(
+                @"F:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\LivingCalradia\ai_test.txt",
+                $"Speaker: {aiResponse.Speaker}\n" +
+                $"Response: {aiResponse.Response}\n" +
+                $"Intent: {aiResponse.Intent}"
+            );
+
         }
 
         public override void SyncData(IDataStore dataStore)
