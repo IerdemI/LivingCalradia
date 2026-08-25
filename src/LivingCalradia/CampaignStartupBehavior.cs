@@ -24,9 +24,31 @@ namespace LivingCalradia
             CharacterContext context = CharacterContextReader.BuildContext(testHero);
 
 
-            string prompt = CharacterPromptBuilder.BuildTestPrompt(context);
+            DecisionContext decisionContext = new DecisionContext
+            {
+                EventType = "WAR_STATUS",
+                EventDescription = "Your kingdom is currently at war with the Khuzait.",
+                Character = context,
+                AvailableActions =
+                {
+                    "SUPPORT_WAR",
+                    "SEEK_PEACE",
+                    "NEUTRAL"
+                }
+            };
 
-            LlmResponse aiResponse = await LocalLlmClient.SendPromptAsync(prompt);
+            string decisionPrompt =
+                 CharacterPromptBuilder.BuildDecisionPrompt(decisionContext);
+
+            AiDecisionResponse decision =
+                await LocalLlmClient.SendDecisionAsync(decisionPrompt);
+
+            File.WriteAllText(
+                @"F:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\LivingCalradia\decision_test.txt",
+                $"Character: {decision.Character}\n" +
+                $"Decision: {decision.Decision}\n" +
+                $"Reason: {decision.Reason}"
+            );
 
             File.WriteAllText(
                 @"F:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\LivingCalradia\context_test.txt",
@@ -40,13 +62,6 @@ namespace LivingCalradia
                 $"Children: {string.Join(", ", context.Children)}\n" +
                 $"Siblings: {string.Join(", ", context.Siblings)}\n" +
                 $"Honor: {context.Honor}\n"
-            );
-
-            File.WriteAllText(
-                @"F:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\LivingCalradia\ai_test.txt",
-                $"Speaker: {aiResponse.Speaker}\n" +
-                $"Response: {aiResponse.Response}\n" +
-                $"Intent: {aiResponse.Intent}"
             );
 
         }
