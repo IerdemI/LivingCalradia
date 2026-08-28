@@ -12,11 +12,13 @@ namespace LivingCalradia
         protected override void DefineClassTypes()
         {
             AddClassDefinition(typeof(CharacterMemory), 1);
+            AddClassDefinition(typeof(CharacterBelief), 2);
         }
 
         protected override void DefineContainerDefinitions()
         {
             ConstructContainerDefinition(typeof(System.Collections.Generic.List<CharacterMemory>));
+            ConstructContainerDefinition(typeof(System.Collections.Generic.List<CharacterBelief>));
         }
     }
 }

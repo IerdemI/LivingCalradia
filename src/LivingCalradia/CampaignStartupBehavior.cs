@@ -24,6 +24,8 @@ namespace LivingCalradia
             CharacterContext context = CharacterContextReader.BuildContext(testHero);
             CharacterMemoryBehavior memoryBehavior =
                 Campaign.Current.GetCampaignBehavior<CharacterMemoryBehavior>();
+            CharacterBeliefBehavior beliefBehavior =
+                Campaign.Current.GetCampaignBehavior<CharacterBeliefBehavior>();
 
             string testDescription =
                 "The player promised to support Lucon in a future political dispute.";
@@ -35,6 +37,46 @@ namespace LivingCalradia
                     HeroId = testHero.StringId,
                     Description = testDescription,
                     Importance = 90
+                });
+            }
+
+            string testClaim =
+                 "The Khuzait war is strategically necessary.";
+
+            if (!beliefBehavior.GetBeliefs().Any(b =>
+                b.HeroId == testHero.StringId &&
+                b.Claim == testClaim))
+            {
+                beliefBehavior.AddBelief(new CharacterBelief
+                {
+                    HeroId = testHero.StringId,
+                    Claim = testClaim,
+                    Confidence = 75,
+                    Source = "Test"
+                });
+            }
+
+
+
+            Hero secondHero = Hero.AllAliveHeroes
+                .FirstOrDefault(h =>
+                    h != Hero.MainHero &&
+                    h.IsLord &&
+                    h != testHero);
+
+            string secondClaim =
+               "The Khuzait war is strategically unnecessary.";
+
+            if (!beliefBehavior.GetBeliefs().Any(b =>
+                b.HeroId == secondHero.StringId &&
+                b.Claim == secondClaim))
+            {
+                beliefBehavior.AddBelief(new CharacterBelief
+                {
+                    HeroId = secondHero.StringId,
+                    Claim = secondClaim,
+                    Confidence = 70,
+                    Source = "Test"
                 });
             }
 
@@ -89,6 +131,20 @@ namespace LivingCalradia
                 $"Siblings: {string.Join(", ", context.Siblings)}\n" +
                 $"Honor: {context.Honor}\n"
             );
+
+
+            File.WriteAllText(
+                @"F:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\LivingCalradia\belief_test.txt",
+                string.Join(
+                    "\n\n",
+        beliefBehavior.GetBeliefsForHero(testHero.StringId).Select(b =>
+            $"HeroId: {b.HeroId}\n" +
+            $"Claim: {b.Claim}\n" +
+            $"Confidence: {b.Confidence}\n" +
+            $"Source: {b.Source}"
+        )
+    )
+);
 
         }
 

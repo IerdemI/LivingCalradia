@@ -25,6 +25,7 @@ namespace LivingCalradia
             {
                 campaignStarter.AddBehavior(new CampaignStartupBehavior());
                 campaignStarter.AddBehavior(new CharacterMemoryBehavior());
+                campaignStarter.AddBehavior(new CharacterBeliefBehavior());
             }
         }
 
