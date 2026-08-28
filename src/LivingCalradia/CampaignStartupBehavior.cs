@@ -22,7 +22,33 @@ namespace LivingCalradia
             .FirstOrDefault(h => h != Hero.MainHero && h.IsLord);
 
             CharacterContext context = CharacterContextReader.BuildContext(testHero);
+            CharacterMemoryBehavior memoryBehavior =
+                Campaign.Current.GetCampaignBehavior<CharacterMemoryBehavior>();
 
+            string testDescription =
+                "The player promised to support Lucon in a future political dispute.";
+
+            if (!memoryBehavior.HasMemory(testHero.StringId, testDescription))
+            {
+                memoryBehavior.AddMemory(new CharacterMemory
+                {
+                    HeroId = testHero.StringId,
+                    Description = testDescription,
+                    Importance = 90
+                });
+            }
+
+            File.WriteAllText(
+                 @"F:\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\LivingCalradia\memory_test.txt",
+                 string.Join(
+                    "\n\n",
+                    memoryBehavior.GetMemories().Select(m =>
+                        $"HeroId: {m.HeroId}\n" +
+                        $"Description: {m.Description}\n" +
+                        $"Importance: {m.Importance}"
+                    )
+                )
+            );
 
             DecisionContext decisionContext = new DecisionContext
             {

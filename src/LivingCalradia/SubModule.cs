@@ -24,6 +24,7 @@ namespace LivingCalradia
             if (game.GameType is Campaign && gameStarterObject is CampaignGameStarter campaignStarter)
             {
                 campaignStarter.AddBehavior(new CampaignStartupBehavior());
+                campaignStarter.AddBehavior(new CharacterMemoryBehavior());
             }
         }
 
